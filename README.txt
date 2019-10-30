@@ -1,8 +1,3 @@
-test
-
-OMAE WA MU SHINDERU!!!
-
-
                          __    _                                   
                     _wr""        "-q__                             
                  _dP                 9m_     
