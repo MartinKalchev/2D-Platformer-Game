@@ -33,13 +33,13 @@ int main(int argc, char* argv[])
 			{
 				switch (ev.key.keysym.sym)
 				{
-				case SDLK_r:
+				case SDLK_RIGHT:
 					SDL_SetRenderDrawColor(mRender, 255, 0, 0, 255);
 					break;
-				case SDLK_g:
+				case SDLK_LEFT:
 					SDL_SetRenderDrawColor(mRender, 0, 255, 0, 255);
 					break;
-				case SDLK_b:
+				case SDLK_UP:
 					SDL_SetRenderDrawColor(mRender, 0, 0, 255, 255);
 					break;
 				default:
