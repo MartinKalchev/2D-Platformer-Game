@@ -33,6 +33,9 @@ int main(int argc, char* argv[])
 			{
 				switch (ev.key.keysym.sym)
 				{
+				case SDLK_ESCAPE:
+					SDL_Quit();
+					break;
 				case SDLK_RIGHT:
 					SDL_SetRenderDrawColor(mRender, 255, 0, 0, 255);
 					break;
