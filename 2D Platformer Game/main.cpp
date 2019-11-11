@@ -48,11 +48,8 @@ int main(int argc, char* argv[])
 				default:
 					SDL_SetRenderDrawColor(mRender, 0, 0, 0, 0);
 				}
-
-
 			}
 		}
-
 		SDL_RenderClear(mRender);
 		SDL_RenderPresent(mRender);
 	}
