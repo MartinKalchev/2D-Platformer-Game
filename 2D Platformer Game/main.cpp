@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
 	int currentTime = 0;
 	float deltaTime = 0;
 	float frameCounter = 0;
-	float frameLimit = 0.4f;
+	float frameLimit = 0.20f;
 
 	SDL_Window* window = nullptr;
 	SDL_Renderer* mRender = nullptr;
@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
 	int framesX = 8, framesY = 1;
 	int frameWidth = textureWidth / framesX;
 	int frameHeight = textureHeight / framesY;
-	float moveSpeed = 200.0f;
+	float moveSpeed = 300.f;
 	
 	positionRect.h = cropRect.h = frameHeight;
 	positionRect.w = cropRect.w = frameWidth;
@@ -93,27 +93,49 @@ int main(int argc, char* argv[])
 					//SDL_SetRenderDrawColor(mRender, 255, 0, 0, 255);
 					positionRect.x += moveSpeed * deltaTime;
 					cropRect.x = frameWidth * 5;
-					if (frameCounter >= frameLimit) {
+					if (frameCounter >= frameLimit * 3) {
+						frameCounter = 0;
+						cropRect.x = frameWidth * 5;
+					}
+					else if ((frameCounter >= frameLimit * 2)) {
+						//frameCounter = 0;
+						//cropRect.x += frameWidth;
+						cropRect.x = frameWidth * 7;
+					}
+					else if ((frameCounter >= frameLimit)) {
+						//frameCounter = 0;
+						//cropRect.x += frameWidth;
+						cropRect.x = frameWidth * 6;
+					}
+					/*if (frameCounter >= frameLimit) {
 						frameCounter = 0;
 						cropRect.x += frameWidth;
-						if (cropRect.x >= textureWidth - frameWidth) {
-							cropRect.x -= (frameWidth*2);
-							
+						if (cropRect.x >= (textureWidth - frameWidth)) {
+							cropRect.x = (frameWidth * 5);
 						}
-					}
+					}*/
 					break;
 				case SDLK_LEFT:
 					//SDL_SetRenderDrawColor(mRender, 0, 255, 0, 255);
 					positionRect.x -= moveSpeed * deltaTime;
 					cropRect.x = frameWidth * 2;
-					if (frameCounter >= frameLimit) {
+					if (frameCounter >= frameLimit * 3) {
+						cropRect.x = frameWidth * 2;
+						frameCounter = 0;
+					}
+					else if (frameCounter >= frameLimit * 2) {
+						cropRect.x = 0;
+					}
+					else if (frameCounter >= frameLimit) {
+						cropRect.x = frameWidth;
+					}
+					/*if (frameCounter >= frameLimit) {
 						frameCounter = 0;
 						cropRect.x -= frameWidth;
 						if (cropRect.x <= 0) {
-							cropRect.x = frameWidth * 2;
-							//cout << "I'm in if st" << endl;
+							cropRect.x = frameWidth * 1;
 						}
-					}
+					}*/
 					break;
 				case SDLK_UP:
 					//SDL_SetRenderDrawColor(mRender, 0, 0, 255, 255);
