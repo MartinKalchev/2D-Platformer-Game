@@ -29,20 +29,16 @@ int main(int argc, char* argv[])
 	float deltaTime = 0;
 	float frameCounter = 0;
 	float frameLimit = 0.20f;
+	float moveSpeed = 300.f;
+	int sizeOnScreen = 48;
+	int textureWidth;
+	int textureHeight;
 
 	SDL_Window* window = nullptr;
 	SDL_Renderer* mRender = nullptr;
 	SDL_Texture* playerTex = nullptr;
 	SDL_Rect positionRect;
 	SDL_Rect cropRect;
-
-	const Uint8* keyState;
-	SDL_Scancode keys[3];
-	keys[0] = SDL_SCANCODE_UP;
-	keys[1] = SDL_SCANCODE_LEFT;
-	keys[2] = SDL_SCANCODE_RIGHT;
-	int textureWidth;
-	int textureHeight;
 
 	SDL_Init(SDL_INIT_VIDEO);
 	int imgFlags = IMG_INIT_PNG;
@@ -51,19 +47,17 @@ int main(int argc, char* argv[])
 	}
 
 	window = SDL_CreateWindow("Main SDL window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screenWIDTH, screenHEIGHT, SDL_WINDOW_SHOWN);
-	mRender = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	mRender = SDL_CreateRenderer(window, 1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
 	playerTex = LoadTexture("assets/small_mario_walking.png", mRender);
 	SDL_QueryTexture(playerTex, NULL, NULL, &textureWidth, &textureHeight);
-
 	int framesX = 8, framesY = 1;
 	int frameWidth = textureWidth / framesX;
 	int frameHeight = textureHeight / framesY;
-	float moveSpeed = 300.f;
 	
 	positionRect.h = cropRect.h = frameHeight;
 	positionRect.w = cropRect.w = frameWidth;
-	positionRect.h = positionRect.w = 32;
+	positionRect.h = positionRect.w = 40;
 	positionRect.x = 0;
 	positionRect.y = 640 - positionRect.h;
 	cropRect.y = 0;
@@ -87,36 +81,26 @@ int main(int argc, char* argv[])
 				switch (ev.key.keysym.sym)
 				{
 				case SDLK_ESCAPE:
+					isRunning = false;
 					SDL_Quit();
 					break;
+
 				case SDLK_RIGHT:
-					//SDL_SetRenderDrawColor(mRender, 255, 0, 0, 255);
 					positionRect.x += moveSpeed * deltaTime;
 					cropRect.x = frameWidth * 5;
 					if (frameCounter >= frameLimit * 3) {
 						frameCounter = 0;
 						cropRect.x = frameWidth * 5;
 					}
-					else if ((frameCounter >= frameLimit * 2)) {
-						//frameCounter = 0;
-						//cropRect.x += frameWidth;
+					else if (frameCounter >= frameLimit * 2) {
 						cropRect.x = frameWidth * 7;
 					}
-					else if ((frameCounter >= frameLimit)) {
-						//frameCounter = 0;
-						//cropRect.x += frameWidth;
+					else if (frameCounter >= frameLimit) {
 						cropRect.x = frameWidth * 6;
 					}
-					/*if (frameCounter >= frameLimit) {
-						frameCounter = 0;
-						cropRect.x += frameWidth;
-						if (cropRect.x >= (textureWidth - frameWidth)) {
-							cropRect.x = (frameWidth * 5);
-						}
-					}*/
 					break;
+
 				case SDLK_LEFT:
-					//SDL_SetRenderDrawColor(mRender, 0, 255, 0, 255);
 					positionRect.x -= moveSpeed * deltaTime;
 					cropRect.x = frameWidth * 2;
 					if (frameCounter >= frameLimit * 3) {
@@ -129,21 +113,12 @@ int main(int argc, char* argv[])
 					else if (frameCounter >= frameLimit) {
 						cropRect.x = frameWidth;
 					}
-					/*if (frameCounter >= frameLimit) {
-						frameCounter = 0;
-						cropRect.x -= frameWidth;
-						if (cropRect.x <= 0) {
-							cropRect.x = frameWidth * 1;
-						}
-					}*/
 					break;
-				case SDLK_UP:
-					//SDL_SetRenderDrawColor(mRender, 0, 0, 255, 255);
+
+				case SDLK_UP:					
 					cropRect.x = frameWidth * 3;
 					positionRect.y -= moveSpeed * deltaTime;
 					break;
-				//default:
-					//SDL_SetRenderDrawColor(mRender, 0, 0, 0, 0);
 				}
 			}
 			else if (ev.type == SDL_KEYUP) {
@@ -159,12 +134,10 @@ int main(int argc, char* argv[])
 					cropRect.x = frameWidth * 5;
 					break;
 				}
-				
 			}
 		}
 		
 		frameCounter += deltaTime;
-		//cout << frameCounter << " " << frameLimit << endl;
 
 		SDL_RenderClear(mRender);
 		SDL_RenderCopy(mRender, playerTex, &cropRect, &positionRect);
@@ -179,7 +152,6 @@ int main(int argc, char* argv[])
 	playerTex = nullptr;
 	IMG_Quit();
 	SDL_Quit();
-
 
 	return 0;
 }
