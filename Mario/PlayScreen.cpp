@@ -5,10 +5,11 @@ PlayScreen::PlayScreen()
 	mTimer = Timer::Instance();
 	mInput = InputManager::Instance();
 
-	mBackgroundStage = new Texture("Assets/background.png", 0, 0, 1280, 720);
-	mBackgroundStage->Parent(this);
-	mBackgroundStage->Pos(Vector2(Graphics::Instance()->SCREEN_WIDTH * 0.5f, Graphics::Instance()->SCREEN_HEIGHT * 0.5f));
+	mCanvas = new GameEntity();
+	mCanvas->Parent(this);
+	mCanvas->Pos(Vector2(0, 0));
 
+	CreateBackgroundCanvas();
 
 	mSideBar = new PlaySideBar();
 	mSideBar->Parent(this);
@@ -32,17 +33,17 @@ PlayScreen::~PlayScreen()
 	mTimer = NULL;
 	mInput = NULL;
 
-	delete mBackgroundStage;
-	mBackgroundStage = NULL;
+	for (int i = 0; i < mBackgroundTextures.size(); i++)
+	{
+		delete mBackgroundTextures[i];
+		mBackgroundTextures[i] = NULL;
+	}
 
 	delete mSideBar;
 	mSideBar = NULL;
 
 	//delete player;
 	//player = NULL;
-
-	delete mPlayer;
-	mPlayer = NULL;
 
 	delete mStartLabel;
 	mStartLabel = NULL;
@@ -52,6 +53,9 @@ PlayScreen::~PlayScreen()
 
 	delete mPlayer;
 	mPlayer = NULL;
+
+	delete mCanvas;
+	mCanvas = NULL;
 }
 
 void PlayScreen::StartNextLevel()
@@ -64,11 +68,33 @@ void PlayScreen::StartNextLevel()
 	mLevel = new Level(currentStage, mSideBar, mPlayer);
 }
 
+void PlayScreen::CreateBackgroundCanvas()
+{
+	mBackgroundCanvas = new GameEntity();
+	mBackgroundCanvas->Parent(mCanvas);
+	mBackgroundCanvas->Pos(Vector2(0, 0));
+
+	const int nOfBackgrounds = 10; // TODO: Fix magic number
+	for (int i = 0; i < nOfBackgrounds; i++)
+	{
+		Texture* currentTexture = new Texture("Assets/background.png", 0, 0, 1280, 720);
+		currentTexture->Parent(mBackgroundCanvas);
+		const float offset = (Graphics::Instance()->SCREEN_WIDTH) * i;
+		currentTexture->Pos(Vector2((Graphics::Instance()->SCREEN_WIDTH * 0.5f) + offset, Graphics::Instance()->SCREEN_HEIGHT * 0.5f));
+
+		mBackgroundTextures.push_back(currentTexture);
+	}
+}
+
 void PlayScreen::StartNewGame()
 {
-	delete mPlayer;
+	if (mPlayer != NULL)
+	{
+		delete mPlayer;
+	}
+
 	mPlayer = new Player();
-	mPlayer->Parent(this);
+	mPlayer->Parent(mCanvas);
 	mPlayer->Pos(Vector2(Graphics::Instance()->SCREEN_WIDTH * 0.1f, Graphics::Instance()->SCREEN_HEIGHT * 0.73f));
 	mPlayer->Active(false);
 
@@ -115,13 +141,24 @@ void PlayScreen::Update()
 		}
 
 		mPlayer->Update();
+
+		if (mPlayer->Pos().x >= Graphics::Instance()->SCREEN_WIDTH * 0.5f)
+		{
+			const float canvasX = -(mPlayer->Pos(local).x - (Graphics::Instance()->SCREEN_WIDTH * 0.5f));
+			mCanvas->Pos(Vector2(canvasX, mCanvas->Pos(local).y));
+			mPlayer->mMoveBoundsX = Vector2(abs(canvasX), Graphics::Instance()->SCREEN_WIDTH + abs(canvasX));
+		}
 	}
 	
 }
 
 void PlayScreen::Render()
 {
-	mBackgroundStage->Render();
+	mCanvas->Render();
+	for (Texture* t : mBackgroundTextures)
+	{
+		t->Render();
+	}
 	mSideBar->Render();
 
 	if (!gameStarted)

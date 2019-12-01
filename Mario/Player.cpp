@@ -18,7 +18,7 @@ Player::Player()
 	mMario->WrapMode(AnimatedTexture::loop);
 
 	mMoveSpeed = 150.0f;
-	mMoveBoundsX = Vector2(0.0f, 1250.0f);
+	mMoveBoundsX = Vector2(0.0f, Graphics::Instance()->SCREEN_WIDTH);
 
 	marioDying = new AnimatedTexture("Assets/mario_walking.png", 194, 96, 32, 35, 1, 1.0f, AnimatedTexture::horizontal);
 	marioDying->Parent(this);
