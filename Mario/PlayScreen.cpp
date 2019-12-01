@@ -7,7 +7,8 @@ PlayScreen::PlayScreen()
 
 	mBackgroundStage = new Texture("Assets/background.png", 0, 0, 1280, 720);
 	mBackgroundStage->Parent(this);
-	mBackgroundStage->Pos(Vector2(Graphics::Instance()->SCREEN_WIDTH * 0.5f, Graphics::Instance()->SCREEN_HEIGHT * 0.5f));
+	//mBackgroundStage->Pos(Vector2(Graphics::Instance()->SCREEN_WIDTH * 0.5f, Graphics::Instance()->SCREEN_HEIGHT * 0.5f));
+	mBackgroundStage->Pos(Vector2(0, 0));
 
 
 	mSideBar = new PlaySideBar();
