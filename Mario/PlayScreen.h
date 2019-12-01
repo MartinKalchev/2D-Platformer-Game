@@ -13,9 +13,11 @@ private:
 	Timer* mTimer;
 	InputManager* mInput;
 	std::vector<Texture*> mBackgroundTextures;
+	std::vector<Texture*> mTileMapTextures;
 	PlaySideBar* mSideBar;
 	GameEntity* mCanvas;
 	GameEntity* mBackgroundCanvas;
+	GameEntity* mTileMapCanvas;
 
 	//AnimatedTexture* player;
 	Texture* mStartLabel;
@@ -35,6 +37,7 @@ private:
 	//Loads the next level
 	void StartNextLevel();
 	void CreateBackgroundCanvas();
+	void CreateTileMapCanvas();
 
 public:
 	PlayScreen();

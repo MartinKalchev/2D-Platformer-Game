@@ -63,6 +63,8 @@ namespace QuickSDL
 		//Called to render the texture to the screen
 		//----------------------------------------------
 		virtual void Render();
+
+		Vector2 GetDimensions();
 	};
 }
 #endif

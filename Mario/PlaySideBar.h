@@ -35,6 +35,8 @@ public:
 
 	void Update();
 	void Render();
+
+	Vector2 GetDimensions();
 };
 
 #endif

@@ -125,3 +125,10 @@ void PlaySideBar::Render()
 
 	mTotalLivesLabel->Render();
 }
+
+
+Vector2 PlaySideBar::GetDimensions()
+{
+	return mBackground->GetDimensions();
+}
+

@@ -25,7 +25,8 @@ PlayScreen::PlayScreen()
 	levelStarted = false;
 	
 	mPlayer = NULL;
-	
+
+	CreateTileMapCanvas();
 }
 
 PlayScreen::~PlayScreen()
@@ -37,6 +38,12 @@ PlayScreen::~PlayScreen()
 	{
 		delete mBackgroundTextures[i];
 		mBackgroundTextures[i] = NULL;
+	}
+
+	for (int i = 0; i < mTileMapTextures.size(); i++)
+	{
+		delete mTileMapTextures[i];
+		mTileMapTextures[i] = NULL;
 	}
 
 	delete mSideBar;
@@ -56,6 +63,12 @@ PlayScreen::~PlayScreen()
 
 	delete mCanvas;
 	mCanvas = NULL;
+
+	delete mBackgroundCanvas;
+	mBackgroundCanvas = NULL;
+
+	delete mTileMapCanvas;
+	mTileMapCanvas = NULL;
 }
 
 void PlayScreen::StartNextLevel()
@@ -80,9 +93,41 @@ void PlayScreen::CreateBackgroundCanvas()
 		Texture* currentTexture = new Texture("Assets/background.png", 0, 0, 1280, 720);
 		currentTexture->Parent(mBackgroundCanvas);
 		const float offset = (Graphics::Instance()->SCREEN_WIDTH) * i;
-		currentTexture->Pos(Vector2((Graphics::Instance()->SCREEN_WIDTH * 0.5f) + offset, Graphics::Instance()->SCREEN_HEIGHT * 0.5f));
+		currentTexture->Pos(Vector2((Graphics::Instance()->SCREEN_WIDTH * 0.5f) + offset, currentTexture->GetDimensions().y * 0.50f));
 
 		mBackgroundTextures.push_back(currentTexture);
+	}
+}
+
+void PlayScreen::CreateTileMapCanvas()
+{
+	mTileMapCanvas= new GameEntity();
+	mTileMapCanvas->Parent(mCanvas);
+	mTileMapCanvas->Pos(Vector2(0, 0));
+
+	const int numberOfRows = 10;
+	const int numberOfCols = 100;
+	const int TILE_SCALE = 4;
+	const int TILE_SIZE = 16;
+
+	const int TILE_MAP_START_Y = mSideBar->GetDimensions().y;
+	const int TILE_MAP_START_X = (TILE_SIZE * TILE_SCALE) / 2;
+
+	for (int i = 0; i < numberOfRows; i++)
+	{
+		for (int j = 0; j < numberOfCols; j++)
+		{
+			Texture* currentTexture = new Texture("Assets/Tileset.png", 0, 0, TILE_SIZE, TILE_SIZE);
+
+			currentTexture->Parent(mTileMapCanvas);
+			const float offsetY = TILE_SIZE * i * TILE_SCALE;
+			const float offsetX = TILE_SIZE * j * TILE_SCALE;
+
+			currentTexture->Pos(Vector2(TILE_MAP_START_X + offsetX, TILE_MAP_START_Y + offsetY + (TILE_SIZE * TILE_SCALE)));
+			currentTexture->Scale(Vector2(TILE_SCALE, TILE_SCALE));
+
+			mTileMapTextures.push_back(currentTexture);
+		}
 	}
 }
 
@@ -159,6 +204,12 @@ void PlayScreen::Render()
 	{
 		t->Render();
 	}
+	for (Texture* t : mTileMapTextures)
+	{
+		t->Render();
+	}
+
+
 	mSideBar->Render();
 
 	if (!gameStarted)

@@ -86,4 +86,9 @@ namespace QuickSDL
 
 		mGraphics->DrawTexture(mTex, (mClipped) ? &mClipRect : NULL, &mRenderRect, Rotation(world));
 	}
+
+	Vector2 Texture::GetDimensions()
+	{
+		return Vector2(mWidth, mHeight);
+	}
 }
