@@ -22,8 +22,6 @@ private:
 	AnimatedTexture* mMario;
 
 	float mMoveSpeed;
-	// min and max X the player can move between on the screen
-	Vector2 mMoveBoundsX;
 
 	AnimatedTexture* marioDying;
 
@@ -32,6 +30,9 @@ private:
 	void Movement();
 
 public:
+
+	// min and max X the player can move between on the screen
+	Vector2 mMoveBoundsX;
 
 	Player();
 	~Player();
