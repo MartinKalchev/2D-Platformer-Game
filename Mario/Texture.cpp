@@ -11,6 +11,7 @@ namespace QuickSDL
 	Texture::Texture(std::string filename)
 	{
 		mGraphics = Graphics::Instance();
+		
 
 		//Loads the texture from the AssetManager to avoid loading textures more than once
 		mTex = AssetManager::Instance()->GetTexture(filename);
@@ -29,6 +30,7 @@ namespace QuickSDL
 	{
 		mGraphics = Graphics::Instance();
 
+
 		//Loads the texture from the AssetManager to avoid loading textures more than once
 		mTex = AssetManager::Instance()->GetTexture(filename);
 
@@ -46,6 +48,7 @@ namespace QuickSDL
 		mClipRect.y = y;
 		mClipRect.w = mWidth;
 		mClipRect.h = mHeight;
+
 	}
 
 	Texture::Texture(std::string text, std::string fontPath, int size, SDL_Color color)
@@ -84,7 +87,9 @@ namespace QuickSDL
 		mRenderRect.w = (int)(mWidth * scale.x);
 		mRenderRect.h = (int)(mHeight * scale.y);
 
+		
 		mGraphics->DrawTexture(mTex, (mClipped) ? &mClipRect : NULL, &mRenderRect, Rotation(world));
+		
 	}
 
 	Vector2 Texture::GetDimensions()

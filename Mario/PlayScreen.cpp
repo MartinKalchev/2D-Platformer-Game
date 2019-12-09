@@ -21,12 +21,12 @@ PlayScreen::PlayScreen()
 
 
 	mLevel = NULL;
-	levelStartDelay = 1.0f;
+	levelStartDelay = 0.5f;
 	levelStarted = false;
 	
 	mPlayer = NULL;
 
-	CreateTileMapCanvas();
+	//CreateTileMapCanvas();
 }
 
 PlayScreen::~PlayScreen()
@@ -140,7 +140,7 @@ void PlayScreen::StartNewGame()
 
 	mPlayer = new Player();
 	mPlayer->Parent(mCanvas);
-	mPlayer->Pos(Vector2(Graphics::Instance()->SCREEN_WIDTH * 0.1f, Graphics::Instance()->SCREEN_HEIGHT * 0.73f));
+	mPlayer->Pos(Vector2(Graphics::Instance()->SCREEN_WIDTH * 0.1, Graphics::Instance()->SCREEN_HEIGHT * 0.73f));
 	mPlayer->Active(false);
 
 	mSideBar->SetHighScore(30000);
@@ -168,7 +168,7 @@ void PlayScreen::Update()
 	else
 	{
 		gameStartTimer += mTimer->DeltaTime();
-		if (gameStartTimer >= 3.0f)
+		if (gameStartTimer >= 1.0f)
 			gameStarted = true;
 	}
 

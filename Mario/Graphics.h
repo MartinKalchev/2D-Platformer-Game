@@ -41,6 +41,7 @@ namespace QuickSDL
 		//The renderer used to render all textures
 		SDL_Renderer* mRenderer;
 
+
 	public:
 		//--------------------------------------------
 		//Returns a pointer to the class instance  

@@ -11,6 +11,7 @@ namespace QuickSDL
 		: Texture(filename, x, y, w, h)
 	{
 		mTimer = Timer::Instance();
+		mInput = InputManager::Instance();
 
 		mStartX = x;
 		mStartY = y;
@@ -25,17 +26,22 @@ namespace QuickSDL
 		mAnimationDone = false;
 
 		mWrapMode = loop;
+
+
+		flipType = SDL_FLIP_NONE;
+
 	}
 
 	AnimatedTexture::~AnimatedTexture()
 	{
-
+		mInput = NULL;
 	}
 
 	void AnimatedTexture::WrapMode(WRAP_MODE mode)
 	{
 		mWrapMode = mode;
 	}
+
 
 	void AnimatedTexture::ResetAnimation()
 	{
@@ -71,5 +77,33 @@ namespace QuickSDL
 			else
 				mClipRect.y = mStartY + (int)(mAnimationTimer / mTimePerFrame) * mHeight;
 		}
+	}
+
+
+	void AnimatedTexture::Render()
+	{
+		Vector2 pos = Pos(world);
+		Vector2 scale = Scale(world);
+
+		//Centers the texture on the texture's world position so that its position is not the top left corner
+		mRenderRect.x = (int)(pos.x - mWidth * scale.x * 0.5f);
+		mRenderRect.y = (int)(pos.y - mHeight * scale.y * 0.5f);
+
+		//Scales the width and height according to the scale of the GameEntity
+		mRenderRect.w = (int)(mWidth * scale.x);
+		mRenderRect.h = (int)(mHeight * scale.y);
+
+
+		if (mInput->KeyDown(SDL_SCANCODE_LEFT))
+		{
+			flipType = SDL_FLIP_HORIZONTAL;
+		}
+		else if (mInput->KeyDown(SDL_SCANCODE_RIGHT))
+		{
+			flipType = SDL_FLIP_NONE;
+		}
+
+		mGraphics->DrawTexture(mTex, (mClipped) ? &mClipRect : NULL, &mRenderRect, Rotation(world), flipType);
+
 	}
 }

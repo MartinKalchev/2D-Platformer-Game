@@ -23,7 +23,7 @@ Level::Level(int stage, PlaySideBar* sideBar, Player* player)
 
 	mPlayer = player;
 	PlayerHit = false;
-	PlayerRespawnDelay = 3.0f;
+	PlayerRespawnDelay = 1.0f;
 	PlayerRespawnTimer = 0.0f;
 	RespawnLabelOnScreen = 2.0f;
 
@@ -107,8 +107,8 @@ void Level::HandlePlayerDeath()
 
 			if (PlayerRespawnTimer >= PlayerRespawnDelay)
 			{
-				mPlayer->Active(true);
 				mPlayer->Visible(true);
+				mPlayer->Active(true);
 				PlayerHit = false;
 			}
 		}

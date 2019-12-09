@@ -6,6 +6,7 @@
 //--------------------------------------------------------------
 #include "Timer.h"
 #include "Texture.h"
+#include "InputManager.h"
 
 namespace QuickSDL
 {
@@ -27,10 +28,16 @@ namespace QuickSDL
 		//------------------------------------------------------------------------------------
 		enum ANIM_DIR { horizontal = 0, vertical = 1 };
 
+
 	private:
 
 		//Used to get the deltatime to update the animation
 		Timer* mTimer;
+
+		InputManager* mInput;
+
+
+		SDL_RendererFlip flipType;
 
 		//the first frame's starting pixel's X values on the spritesheet
 		int mStartX;
@@ -84,6 +91,8 @@ namespace QuickSDL
 		//Used to update the animation frames and loop the animation if needed
 		//---------------------------------------------------------------------------
 		void Update();
+
+		void Render();
 	};
 }
 #endif

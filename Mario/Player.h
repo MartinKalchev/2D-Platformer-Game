@@ -13,8 +13,9 @@ private:
 
 	// if player is visible on screen
 	bool mVisible;
-	// if player is killed
+	// if is animating
 	bool mAnimating;
+
 
 	int mScore;
 	int mLives;
@@ -23,7 +24,12 @@ private:
 
 	float mMoveSpeed;
 
+	bool isWalking;
+	bool isJumping;
+
 	AnimatedTexture* marioDying;
+	AnimatedTexture* marioJumping;
+	Texture* marioIdle;
 
 private:
 
@@ -39,7 +45,7 @@ public:
 
 	void Visible(bool visible);
 	bool isAnimating();
-
+	void Animating(bool animating);
 
 	int Score();
 	int Lives();

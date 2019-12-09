@@ -21,12 +21,14 @@ namespace QuickSDL
 		//---------------------------------------------------------------------------------------------------------------------
 		enum SPACE { local = 0, world = 1 };
 
+		Vector2 mPos;
+
 	private:
 		//--------------------------------------------------------------------------------------------------------------
 		//Position/Rotation/Scale/Active/Parent set to private to make they are not set directly, but the functions are 
 		// used instead                                                                                                 
 		//--------------------------------------------------------------------------------------------------------------
-		Vector2 mPos;
+		//Vector2 mPos;
 		float mRotation;
 		Vector2 mScale;
 
