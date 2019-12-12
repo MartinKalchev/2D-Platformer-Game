@@ -28,14 +28,25 @@ Player::Player()
 	isWalking = false;
 	isJumping = false;
 
-	marioJumping = new AnimatedTexture("Assets/mario_walking.png", 160, 0, 32, 64, 1, 1.0f, AnimatedTexture::horizontal);
+	/*marioJumping = new AnimatedTexture("Assets/mario_walking.png", 160, 0, 32, 64, 1, 1.0f, AnimatedTexture::horizontal);
 	marioJumping->Parent(this);
 	marioJumping->Pos(VEC2_ZERO);
-	marioJumping->WrapMode(AnimatedTexture::loop);
+	marioJumping->WrapMode(AnimatedTexture::loop);*/
+	marioJumpingRight = new Texture("Assets/mario_walking.png", 160, 0, 32, 64);
+	marioJumpingRight->Parent(this);
+	marioJumpingRight->Pos(VEC2_ZERO);
 
-	marioIdle = new Texture("Assets/mario_walking.png", 0, 0, 32, 64);
-	marioIdle->Parent(this);
-	marioIdle->Pos(VEC2_ZERO);
+	marioJumpingLeft = new Texture("Assets/mario_walking_reversed.png", 672 - 192, 0, 32, 64);
+	marioJumpingLeft->Parent(this);
+	marioJumpingLeft->Pos(VEC2_ZERO);
+
+	marioIdleLeft = new Texture("Assets/mario_walking_reversed.png", 672 - 32, 0, 32, 64);
+	marioIdleLeft->Parent(this);
+	marioIdleLeft->Pos(VEC2_ZERO);
+
+	marioIdleRight = new Texture("Assets/mario_walking.png", 0, 0, 32, 64);
+	marioIdleRight->Parent(this);
+	marioIdleRight->Pos(VEC2_ZERO);
 }
 
 Player::~Player()
@@ -49,28 +60,42 @@ Player::~Player()
 	delete marioDying;
 	marioDying = NULL;
 
-	delete marioJumping;
-	marioJumping = NULL;
+	delete marioJumpingLeft;
+	marioJumpingLeft = NULL;
 
-	delete marioIdle;
-	marioIdle = NULL;
+	delete marioJumpingRight;
+	marioJumpingRight = NULL;
+
+	delete marioIdleLeft;
+	marioIdleLeft = NULL;
+
+	delete marioIdleRight;
+	marioIdleRight = NULL;
 
 }
 
 
 void Player::Movement()
 {
-	if (mInput->KeyDown(SDL_SCANCODE_RIGHT))
+	/*if (mInput->KeyDown(SDL_SCANCODE_RIGHT) && mInput->KeyDown(SDL_SCANCODE_UP)) {
+		isJumping = true;
+		Translate(VEC2_UP_RIGHT * mMoveSpeed * mTimer->DeltaTime());
+		direction = "right";
+		
+	}*/
+	if (!isJumping && mInput->KeyDown(SDL_SCANCODE_RIGHT))
 	{
 		isWalking = true;
 		Translate(VEC2_RIGHT * mMoveSpeed * mTimer->DeltaTime());
 		mMario->Update();
+		direction = "right";
 	}
-	else if (mInput->KeyDown(SDL_SCANCODE_LEFT))
+	else if (!isJumping && mInput->KeyDown(SDL_SCANCODE_LEFT))
 	{
 		isWalking = true;
 		Translate(-VEC2_RIGHT * mMoveSpeed * mTimer->DeltaTime());
 		mMario->Update();
+		direction = "left";
 	}
 	else if (mInput->KeyReleased(SDL_SCANCODE_LEFT) || mInput->KeyReleased(SDL_SCANCODE_RIGHT))
 	{
@@ -82,6 +107,19 @@ void Player::Movement()
 		isJumping = true;
 		Translate(-VEC2_UP * mMoveSpeed * mTimer->DeltaTime());
 	}
+	/*else if (mInput->KeyReleased(SDL_SCANCODE_UP) && mInput->KeyReleased(SDL_SCANCODE_RIGHT))
+	{
+		Vector2 pos = Pos(local);
+		isJumping = false;
+
+		while (pos.y < Graphics::Instance()->SCREEN_HEIGHT * 0.73f)
+		{
+			Vector2 tempvect = VEC2_UP * mMoveSpeed * mTimer->DeltaTime();
+			pos += tempvect;
+			this->mPos.y = Graphics::Instance()->SCREEN_HEIGHT * 0.73f;
+			Pos(pos);
+		}
+	}*/
 	else if (mInput->KeyReleased(SDL_SCANCODE_UP))
 	{
 		Vector2 pos = Pos(local);
@@ -149,8 +187,6 @@ void Player::Update()
 	{
 		marioDying->Update();
 		mAnimating = marioDying->isAnimating();
-
-		
 	}
 	else
 	{
@@ -177,11 +213,11 @@ void Player::Render()
 			}
 			else if (isJumping == true)
 			{
-				marioJumping->Render();
+				direction == "left" ? marioJumpingLeft->Render() : marioJumpingRight->Render();
 			}
 			else
 			{
-				marioIdle->Render();
+				direction == "left" ? marioIdleLeft->Render() : marioIdleRight->Render();
 			}
 		}
 	}

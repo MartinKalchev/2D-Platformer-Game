@@ -115,6 +115,7 @@ namespace QuickSDL
 	const Vector2 VEC2_ONE = { 1.0f, 1.0f };
 	const Vector2 VEC2_UP = { 0.0f, 1.0f };
 	const Vector2 VEC2_RIGHT = { 1.0f, 0.0f };
+	const Vector2 VEC2_UP_RIGHT = { 1.0f, -1.0f };
 }
 #endif
 

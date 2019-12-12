@@ -3,6 +3,7 @@
 #include "AnimatedTexture.h"
 #include "InputManager.h"
 using namespace QuickSDL;
+using namespace std;
 
 class Player : public GameEntity
 {
@@ -15,21 +16,23 @@ private:
 	bool mVisible;
 	// if is animating
 	bool mAnimating;
+	bool isWalking;
+	bool isJumping;
 
+	string direction = "right";
 
 	int mScore;
 	int mLives;
 
-	AnimatedTexture* mMario;
-
 	float mMoveSpeed;
 
-	bool isWalking;
-	bool isJumping;
-
+	AnimatedTexture* mMario;
 	AnimatedTexture* marioDying;
-	AnimatedTexture* marioJumping;
-	Texture* marioIdle;
+	//AnimatedTexture* marioJumping;
+	Texture* marioJumpingLeft;
+	Texture* marioJumpingRight;
+	Texture* marioIdleLeft;
+	Texture* marioIdleRight;
 
 private:
 
